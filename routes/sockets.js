@@ -1,22 +1,18 @@
 var io = require('socket.io'),
     cookie = require('cookie'),
     nohm = require('nohm').Nohm,
-    MessageModel = require('../model/message'),
+    MessageModel = require('../models/message'),
     redis = require('redis'),
     client = redis.createClient();
 
-exports.initialize = function(server) {
+exports.initialize = function(server, cookie_id) {
   io = io.listen(server);
-  var registeredUsers = ['Rox', 'Adam', 'Karan'];
   
   io.sockets.on('connection', function(socket) {
-    nohm.setPrefix('bugree:io');
-    nohm.setClient(client);
-
     console.log('Socket ' + socket.id + ' connected.');
 
-    var cookies = cookie.parse(socket.handshake.headers.cookie);
-    var sessid = cookies['_bugio_session'];
+    nohm.setPrefix('bugree:io:');
+    nohm.setClient(client);
 
     socket.on('message', function(message) { // receive and save a message
       if(!socket.userid)
@@ -32,25 +28,33 @@ exports.initialize = function(server) {
         else if(err)
           socket.emit('validation_failed', err);
         else {
-          var deliveries = message.recipients.concat(message.ccs || []);
-          for(delivery in deliveries) // alert every recipient about the new message
-            socket.broadcast.to('inbox/' + deliveries[delivery]).emit('new_message', message);
+          var deliveries = message.recipients.concat(message.ccs);
+          deliveries.forEach(function(delivery) { // alert every recipient about the new message
+            socket.broadcast.to('user/' + delivery).emit('new_message', message);
+          });
           socket.send(true, message); // inform myself about the new message
         }
       });
     });
 
-    socket.on('login', function(data) { // perform the login
-      if(!~registeredUsers.indexOf(data.userid))
-        return socket.emit('login', false); // error performing the login
+    socket.on('login', function(data) {
+      var cookies = cookie.parse(socket.handshake.headers.cookie);
+      var sessid = cookies[cookie_id];
+      
+      client.get('bugree:session:' + sessid, function(err, value) {
+        if(!value)
+          return socket.emit('login', false);
 
-      socket.userid = data.userid;
-      socket.join('inbox/' + data.userid); // every user has a his own room
-      socket.emit('login', true);
+        var storedCookie = JSON.parse(value);
+        socket.userid = storedCookie['warden.user.user.key'][0][0];
+        socket.join('user/' + socket.userid);
+        return socket.emit('login', true);
+      });
     });
 
     socket.on('disconnect', function(details) {
       console.log('Socket ' + socket.id + ' disconnected: ' + details + '.');
+      // client.end();
     });
   });
 };

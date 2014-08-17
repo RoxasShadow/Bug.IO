@@ -4,14 +4,11 @@ block content
   h1= title
   p Welcome to #{title}
 
-  form(id='login')
-    input(id='username', type='text', placeholder='Username')
-    input(type='submit', value='Login')
-
   form(id='message')
     input(id='subject',    type='text', placeholder='Subject')
     input(id='body',       type='text', placeholder='Body')
     input(id='recipients', type='text', placeholder='Recipients')
+    input(id='ccs', type='text', placeholder='CCs')
     input(type='submit', value='Send')
 
   p(id='info')

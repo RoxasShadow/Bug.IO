@@ -15,11 +15,10 @@ socket.on('new_message', function(message) { // there is a new message
 socket.on('validation_failed', function(errors) { // error validating the sent message
   if(typeof errors == 'string')
     info(errors);
-  else {
+  else
     for(error in errors)
       if(errors[error].length > 0)
         info('Error: <em>' + error + '</em> must be <em>' + errors[error] + '</em>.');
-  }
 });
 
 socket.on('message', function(response, message, error) { // message response
@@ -31,19 +30,15 @@ socket.on('login', function(response) { // login response
 });
 
 $(document).on('ready', function() {
-  $('#login').on('submit', function(e) {
-    e.preventDefault();
-
-    var username = $('#username').val();
-    socket.emit('login', { userid: username });
-  });
+  socket.emit('login');
 
   $('#message').on('submit', function(e) {
     e.preventDefault();
     
     var subject = $('#subject').val(),
         body = $('#body').val(),
-        recipients = $('#recipients').val().split(' ');
-    socket.send({ subject: subject, body: body, recipients: recipients });
+        recipients = $('#recipients').val().split(' '),
+        ccs = $('#ccs').val().split(' ');
+    socket.send({ subject: subject, body: body, recipients: recipients, ccs: ccs });
   });
 });

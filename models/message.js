@@ -10,11 +10,15 @@ module.exports = nohm.model('Message', {
       type: 'string'
     },
     sender: {
-      type: 'string',
-      validations: [ 'notEmpty' ]
+      type: 'integer',
+      minMax: { min: 1 }
+      index: true
     },
     recipients: {
       type: 'object'
     },
+    ccs: {
+      type: 'object'
+    }
   }
 });
