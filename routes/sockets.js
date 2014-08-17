@@ -11,7 +11,7 @@ exports.initialize = function(server, cookie_id) {
   io.sockets.on('connection', function(socket) {
     console.log('Socket ' + socket.id + ' connected.');
 
-    nohm.setPrefix('bugree:io:');
+    nohm.setPrefix('bugio:io:');
     nohm.setClient(client);
 
     socket.on('message', function(message) { // receive and save a message
@@ -41,7 +41,7 @@ exports.initialize = function(server, cookie_id) {
       var cookies = cookie.parse(socket.handshake.headers.cookie);
       var sessid = cookies[cookie_id];
       
-      client.get('bugree:session:' + sessid, function(err, value) {
+      client.get('bugio:session:' + sessid, function(err, value) {
         if(!value)
           return socket.emit('login', false);
 
