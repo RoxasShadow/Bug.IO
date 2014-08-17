@@ -54,7 +54,6 @@ exports.initialize = function(server, cookie_id) {
 
     socket.on('disconnect', function(details) {
       console.log('Socket ' + socket.id + ' disconnected: ' + details + '.');
-      // client.end();
     });
   });
 };
