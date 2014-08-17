@@ -9,7 +9,7 @@ function info(msg) {
 }
 
 socket.on('new_message', function(message) { // there is a new message
-  notify('There is a new message from ' + message.sender + ': ' + message.subject + ' - ' + message.body + '.');
+  notify('There is a new message from User#' + message.sender + ': ' + message.subject + ' - ' + message.body + '.');
 });
 
 socket.on('validation_failed', function(errors) { // error validating the sent message
