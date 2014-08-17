@@ -13,9 +13,12 @@ socket.on('new_message', function(message) { // there is a new message
 });
 
 socket.on('validation_failed', function(errors) { // error validating the sent message
-  for(error in errors)
-    if(errors[error].length > 0)
-      info('Error: fail in <em>' + error + '</em>#<em>' + errors[error] + '</em>.');
+  if(typeof errors == 'string')
+    info('Error: ' + errors + '.');
+  else
+    for(error in errors)
+      if(errors[error].length > 0)
+        info('Error: fail in <em>' + error + '</em>#<em>' + errors[error] + '</em>.');
 });
 
 socket.on('message', function(response, message, error) { // message response
