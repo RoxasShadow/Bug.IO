@@ -32,7 +32,8 @@ exports.initialize = function(server, cookie_id) {
         else {
           var deliveries = message.recipients.concat(message.ccs);
           deliveries.forEach(function(delivery) { // alert every recipient about the new message
-            socket.broadcast.to('user/' + delivery).emit('new_message', message);
+            if(parseInt(delivery) > 0)
+              socket.broadcast.to('user/' + delivery).emit('new_message', message);
           });
           socket.send(true, message); // inform myself about the new message
         }
