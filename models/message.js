@@ -17,7 +17,7 @@ module.exports = nohm.model('Message', {
       type: 'array',
       validations: [
         function checkIsNotEmpty(value, options, callback) {
-          callback(typeof value == 'object' && value.length > 0 && value.join('').split('').length > 0);
+          callback(typeof value == 'object' && value.length > 0 && value.filter(function(e) { return !!e; }).length > 0);
         }
       ]
     },

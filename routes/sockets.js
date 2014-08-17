@@ -19,8 +19,8 @@ exports.initialize = function(server, cookie_id) {
         return socket.send(false, message, 'Login required.');
 
       message.sender = socket.userid;
-      message.recipients = message.recipients.join('').split('');
-      message.ccs = message.ccs.join('').split('');
+      message.recipients = message.recipients.filter(function(r) { return !!r; });
+      message.ccs = (message.ccs || []).join('').split('');
       
       var msg = nohm.factory('Message');
       msg.p(message);
