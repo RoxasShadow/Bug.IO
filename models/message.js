@@ -11,7 +11,7 @@ module.exports = nohm.model('Message', {
     },
     sender: {
       type: 'integer',
-      minMax: { min: 1 }
+      minMax: { min: 1 },
       index: true
     },
     recipients: {
