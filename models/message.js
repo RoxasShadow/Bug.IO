@@ -2,19 +2,16 @@ var nohm = require('nohm').Nohm;
 
 module.exports = nohm.model('Message', {
   properties: {
-    subject: {
-      type: 'string',
-      validations: [ 'notEmpty' ]
-    },
-    body: {
-      type: 'string'
-    },
     sender: {
       type: 'integer',
       validations: [
         ['minMax', { min: 1 }]
       ],
       index: true
+    },
+    subject: {
+      type: 'string',
+      validations: [ 'notEmpty' ]
     },
     recipients: {
       type: 'array',
@@ -37,6 +34,9 @@ module.exports = nohm.model('Message', {
     ccs: {
       type: 'array'
       // TODO: Remove empty elements on save
+    },
+    body: {
+      type: 'string'
     }
   }
 });
