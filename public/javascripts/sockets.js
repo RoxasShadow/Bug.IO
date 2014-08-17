@@ -22,7 +22,17 @@ socket.on('validation_failed', function(errors) { // error validating the sent m
 });
 
 socket.on('message', function(response, message, error) { // message response
-  info(response === true ? 'Message "' + message.subject + '" sent to User#' + message.sender + '.' : error);
+  if(response === true) {
+    var deliveries = [];
+
+    (message.recipients.concat(message.ccs)).forEach(function(delivery) {
+      deliveries.push(parseInt(delivery) > 0 ? 'User#' + delivery : delivery);
+    });
+
+    info('Message "' + message.subject + '" sent to ' + deliveries.join(', ') + '.');
+  }
+  else
+    info(error);
 });
 
 socket.on('login', function(response) { // login response
