@@ -11,11 +11,16 @@ module.exports = nohm.model('Message', {
     },
     sender: {
       type: 'integer',
-      minMax: { min: 1 },
+      validations: [
+        ['minMax', { min: 1 }]
+      ],
       index: true
     },
     recipients: {
-      type: 'object'
+      type: 'array',
+      validations: [
+        ['minMax', { min: 1 }]
+      ]
     },
     ccs: {
       type: 'object'

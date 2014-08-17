@@ -13,16 +13,13 @@ socket.on('new_message', function(message) { // there is a new message
 });
 
 socket.on('validation_failed', function(errors) { // error validating the sent message
-  if(typeof errors == 'string')
-    info(errors);
-  else
-    for(error in errors)
-      if(errors[error].length > 0)
-        info('Error: <em>' + error + '</em> must be <em>' + errors[error] + '</em>.');
+  for(error in errors)
+    if(errors[error].length > 0)
+      info('Error: fail in <em>' + error + '</em>#<em>' + errors[error] + '</em>.');
 });
 
 socket.on('message', function(response, message, error) { // message response
-  info(response === true ? 'Message "' + message.subject + '" sent.' : error);
+  info(response === true ? 'Message "' + message.subject + '" sent to User#' + message.sender + '.' : error);
 });
 
 socket.on('login', function(response) { // login response
