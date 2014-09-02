@@ -36,7 +36,7 @@ socket.on('message', function(response, message, error) { // message response
 });
 
 socket.on('login', function(response) { // login response
-  info(response === true ? 'Successfully logged in.' : 'Incorrect username.');
+  info(response === true ? 'Successfully logged in.' : 'Error in performing the login.');
 });
 
 $(document).on('ready', function() {
