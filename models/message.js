@@ -14,7 +14,7 @@ module.exports = nohm.model('Message', {
       validations: [ 'notEmpty' ]
     },
     recipients: {
-      type: 'array',
+      type: 'json',
       validations: [
         function checkIsNotEmpty(value, options, callback) {
           callback(typeof value == 'object' && value.length > 0 && value.filter(function(e) { return !!e; }).length > 0);
@@ -22,7 +22,7 @@ module.exports = nohm.model('Message', {
       ]
     },
     ccs: {
-      type: 'array'
+      type: 'json'
     },
     body: {
       type: 'string'
